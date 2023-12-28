@@ -1,35 +1,41 @@
 local set = vim.keymap.set
+local opts = { noremap = true, silent = true, desc = 'which_key_ignore' }
 
-local toggle_option = function(option)
-	local curr_val = vim.api.nvim_get_option_value(option, {})
-	vim.api.nvim_set_option_value(option, not curr_val, {})
+local toggle_options = function(...)
+	local options = {...}
+	for i = 1, #options do
+		local option = options[i]
+		local curr_val = vim.api.nvim_get_option_value(option, {})
+		local t = type(curr_val)
+		if t == 'boolean' then
+			vim.api.nvim_set_option_value(option, not curr_val, {})
+		else
+			print('WARN: The '..t..' type is not handled.')
+		end
+	end
 end
 
-local close_split = function ()
-	local api = vim.api
-	print('yo')
-	-- local buftype = vim.bo.readonly
-	local buftype = vim.bo.buftype
-	print(buftype)
+local delete_buf_close_win = function (overrides)
 end
 
 set('n', '<leader>+', function ()
 	vim.cmd('so')
+	print('INFO: ' .. vim.fn.expand('%:t' ) .. ' sourced.')
 end, { desc = 'Source file' })
 
-set('i', 'jk', '<c-[>')
-set('n', '<leader><leader>', '<cmd> e # <cr>')
-set('n', 'Q', '@q')
+set('i', 'jk', '<c-[>', opts)
+set('n', '<leader><leader>', '<cmd> e # <cr>', opts)
+set('n', 'Q', '@q', opts)
 
 set({ 'n', 'i' }, '<c-s>', '<cmd> w <cr>', { desc = 'Save file' })
+-- NOTE: lets keep the default behaviour for now
+-- set('n', 'ZQ', '<cmd> qa! <cr>', { desc = 'qa!' })
 set('n', 'ZA', '<cmd> xa <cr>', { desc = 'xa' })
--- set('n', 'ZZ', '<cmd> x <cr>', { desc = 'x' })
-set('n', 'ZQ', '<cmd> qa! <cr>', { desc = 'qa!' })
 -- TODO: close tab if it was the last buffer (or window) in the tab. leaderX to close buffer AND split
 -- don't close vim even if it was the last buffer -> empty buffer
 set('n', '<leader>x', '<cmd> bp | conf bd# <cr>') -- -> better bdelete
 set('n', '<leader>X', function ()
-	close_split()
+	delete_buf_close_win()
 end)
 
 set('n', '<tab>', '<cmd> bnext <cr>')
@@ -62,7 +68,8 @@ set('n', '|', '<c-w>|')
 set('n', '_', '<c-w>_')
 
 -- Toggles
-set('n', '<leader>tr', function() toggle_option('relativenumber') end)
+set('n', '<leader>tr', function() toggle_options('relativenumber') end)
+set('n', '<leader>tp', function() toggle_options('relativenumber', 'somethingelse') end)
 -- TODO: toggle wrap, spell
 
 -- Noice stuff
