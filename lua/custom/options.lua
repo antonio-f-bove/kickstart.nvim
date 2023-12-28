@@ -1,5 +1,9 @@
 local o = vim.opt
 
+o.tabstop = 2
+o.shiftwidth = 2
+o.expandtab = true
+
 -- Set highlight on search
 vim.o.hlsearch = false
 
@@ -39,12 +43,13 @@ vim.o.completeopt = 'menuone,noselect'
 vim.o.termguicolors = true
 
 o.scrolloff = 5
--- o.relativenumber = true
 
 o.splitright = true
 o.splitbelow = true
 o.undofile = true
 o.autoread = true
+-- NOTE: should evaluate this one
+-- o.autoread
 
 -- TODO: auto toggle: '' when only one window, on when window is split. Plus only buftype == '' should show winbar
 o.winbar = '%=%m %f'
