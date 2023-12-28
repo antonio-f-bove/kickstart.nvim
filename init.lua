@@ -234,11 +234,6 @@ require('lazy').setup({
       -- sections = {
         -- lualine_z = {
         -- }
-        -- lualine_x = {
-        --   require"noice".api.statusline.mode.get,
-        --   cond = require"noice".api.statusline.mode.has,
-        --   color = { fg = '#ff9e64'}
-        -- }
       -- }
     },
   },
@@ -300,26 +295,32 @@ require('lazy').setup({
   -- - marks related (marks.nvim?)
 
   {
-    "folke/noice.nvim",
-    event = "VeryLazy",
-    opts = {
-      presets = {
-        bottom_search = true, -- use a classic bottom cmdline for search
-        command_palette = true, -- position the cmdline and popupmenu together
-        long_message_to_split = true, -- long messages will be sent to a split
-        inc_rename = false, -- enables an input dialog for inc-rename.nvim
-        lsp_doc_border = false, -- add a border to hover docs and signature help
-      },
-    },
-    dependencies = {
-      -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
-      "MunifTanjim/nui.nvim",
-      -- OPTIONAL:
-      --   `nvim-notify` is only needed, if you want to use the notification view.
-      --   If not available, we use `mini` as the fallback
-      "rcarriga/nvim-notify",
-    }
+    'echasnovski/mini.bufremove',
+    version = 'false',
+    opts = {},
   },
+
+  -- {
+  -- NOTE: I don't know! I love it but somethigs I don't like I havn't been able to change
+  -- Stays off for now
+  --   "folke/noice.nvim",
+  --   event = "VeryLazy",
+  --   opts = {
+  --     presets = {
+  --       bottom_search = true, -- use a classic bottom cmdline for search
+  --       inc_rename = false, -- enables an input dialog for inc-rename.nvim
+  --       lsp_doc_border = false, -- add a border to hover docs and signature help
+  --     },
+  --   },
+  --   dependencies = {
+  --     -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
+  --     "MunifTanjim/nui.nvim",
+  --     -- OPTIONAL:
+  --     --   `nvim-notify` is only needed, if you want to use the notification view.
+  --     --   If not available, we use `mini` as the fallback
+  --     "rcarriga/nvim-notify",
+  --   }
+  -- },
 
   {
     'mbbill/undotree',
@@ -420,43 +421,6 @@ require('lazy').setup({
 -- See `:help vim.o`
 -- NOTE: You can change these options as you wish!
 require 'custom.options'
-
--- Set highlight on search
-vim.o.hlsearch = false
-
--- Make line numbers default
-vim.wo.number = true
-
--- Enable mouse mode
-vim.o.mouse = 'a'
-
--- Sync clipboard between OS and Neovim.
---  Remove this option if you want your OS clipboard to remain independent.
---  See `:help 'clipboard'`
-vim.o.clipboard = 'unnamedplus'
-
--- Enable break indent
-vim.o.breakindent = true
-
--- Save undo history
-vim.o.undofile = true
-
--- Case-insensitive searching UNLESS \C or capital in search
-vim.o.ignorecase = true
-vim.o.smartcase = true
-
--- Keep signcolumn on by default
-vim.wo.signcolumn = 'yes'
-
--- Decrease update time
-vim.o.updatetime = 250
-vim.o.timeoutlen = 300
-
--- Set completeopt to have a better completion experience
-vim.o.completeopt = 'menuone,noselect'
-
--- NOTE: You should make sure your terminal supports this
-vim.o.termguicolors = true
 
 -- [[ Basic Keymaps ]]
 require 'custom.mappings'
@@ -750,8 +714,8 @@ local servers = {
     Lua = {
       workspace = { checkThirdParty = false },
       telemetry = { enable = false },
-      -- NOTE: toggle below to ignore Lua_LS's noisy `missing-fields` warnings
-      -- diagnostics = { disable = { 'missing-fields' } },
+      -- HACK: ?? toggle below to ignore Lua_LS's noisy `missing-fields` warnings
+      diagnostics = { disable = { 'missing-fields' } },
     },
   },
 }
